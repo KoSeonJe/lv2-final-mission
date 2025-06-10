@@ -1,13 +1,13 @@
 package finalmission.service;
 
 import finalmission.domain.Crew;
+import finalmission.domain.Meeting;
 import finalmission.dto.request.CrewLoginRequest;
 import finalmission.dto.request.CrewSignUpRequest;
 import finalmission.dto.response.CrewLoginResponse;
 import finalmission.dto.response.MeetingAppliedCrewResponse;
 import finalmission.repository.CrewRepository;
 import finalmission.repository.MeetingRepository;
-import finalmission.repository.dto.MeetingWithCrew;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,9 +36,10 @@ public class CrewService {
         crewRepository.save(crew);
     }
 
+    // TODO : N+1 문제 해결하기
     public List<MeetingAppliedCrewResponse> getAllMeetingApplicantByCoach(Long coachId) {
-        List<MeetingWithCrew> meetingsWithCrew = meetingRepository.getAllMeetingWithCrewNameByCoachId(coachId);
-        return meetingsWithCrew.stream()
+        List<Meeting> meetings = meetingRepository.findAllByCoachId(coachId);
+        return meetings.stream()
                 .map(MeetingAppliedCrewResponse::from)
                 .toList();
     }

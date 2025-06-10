@@ -1,8 +1,8 @@
 package finalmission.dto.response;
 
 import finalmission.domain.EducationPart;
+import finalmission.domain.Meeting;
 import finalmission.domain.MeetingStatus;
-import finalmission.repository.dto.MeetingWithCrew;
 import java.time.LocalDateTime;
 
 public record MeetingAppliedCrewResponse(
@@ -14,14 +14,14 @@ public record MeetingAppliedCrewResponse(
         MeetingStatus meetingStatus
 ) {
 
-    public static MeetingAppliedCrewResponse from(MeetingWithCrew meetingWithCrew) {
+    public static MeetingAppliedCrewResponse from(Meeting meeting) {
         return new MeetingAppliedCrewResponse(
-                meetingWithCrew.getCrewId(),
-                meetingWithCrew.getCrewName(),
-                meetingWithCrew.getEducationPart(),
-                meetingWithCrew.getMeetingDateTime(),
-                meetingWithCrew.getContent(),
-                meetingWithCrew.getMeetingStatus()
+                meeting.getCrew().getId(),
+                meeting.getCrew().getName(),
+                meeting.getCrew().getEducationPart(),
+                meeting.getDateTime(),
+                meeting.getContent(),
+                meeting.getStatus()
         );
     }
 }
