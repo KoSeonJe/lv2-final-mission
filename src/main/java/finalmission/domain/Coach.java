@@ -35,4 +35,9 @@ public class Coach {
     private LocalTime startTime;
 
     private LocalTime endTime;
+
+    public void updateMeetingTime(LocalTime startTime, LocalTime endTime) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 }

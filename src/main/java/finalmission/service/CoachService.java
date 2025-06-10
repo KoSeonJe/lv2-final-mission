@@ -5,6 +5,7 @@ import static finalmission.domain.TokenAuthRole.COACH;
 import finalmission.domain.Coach;
 import finalmission.domain.Meeting;
 import finalmission.dto.request.CoachLoginRequest;
+import finalmission.dto.request.UpdateMeetingTimeRequest;
 import finalmission.dto.response.AllCoachResponse;
 import finalmission.dto.response.CoachLoginResponse;
 import finalmission.dto.response.CoachResponse;
@@ -40,17 +41,27 @@ public class CoachService {
     }
 
     public CoachResponse getById(Long id) {
-        Coach coach = coachRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id로 코치를 찾을 수 없습니다."));
+        Coach coach = getCoachById(id);
         List<Meeting> meetingsByCoachId = meetingRepository.findAllByCoachId(id);
         List<LocalDateTime> impossibleDateTime = extractImpossibleDateTime(meetingsByCoachId);
         return CoachResponse.from(coach, impossibleDateTime);
     }
 
-    private static List<LocalDateTime> extractImpossibleDateTime(List<Meeting> meetings) {
+    @Transactional
+    public void updateMeetingTime(UpdateMeetingTimeRequest request, Long coachId) {
+        Coach coach = getCoachById(coachId);
+        coach.updateMeetingTime(request.startTime(), request.endTime());
+    }
+
+    private List<LocalDateTime> extractImpossibleDateTime(List<Meeting> meetings) {
         return meetings.stream()
                 .map(Meeting::getDateTime)
                 .filter(dateTime -> dateTime.isAfter(LocalDateTime.now()))
                 .toList();
+    }
+
+    private Coach getCoachById(Long id) {
+        return coachRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id로 코치를 찾을 수 없습니다."));
     }
 }
