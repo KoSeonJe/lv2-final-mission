@@ -41,7 +41,7 @@ public class CoachController {
         return coachService.getById(id);
     }
 
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PatchMapping("/coach/coaches/meet-time")
     public void updateMeetingTime(@RequestBody UpdateMeetingTimeRequest updateMeetingTimeRequest) {
         Long authenticatedCoachId = 1L;

@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +35,13 @@ public class Meeting {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Crew crew;
+
+    @Builder
+    public Meeting(LocalDateTime dateTime, String content, MeetingStatus status, Coach coach, Crew crew) {
+        this.dateTime = dateTime;
+        this.content = content;
+        this.status = status;
+        this.coach = coach;
+        this.crew = crew;
+    }
 }

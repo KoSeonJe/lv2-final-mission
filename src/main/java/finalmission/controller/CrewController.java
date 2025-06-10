@@ -35,7 +35,6 @@ public class CrewController {
         crewService.signUp(crewSignUpRequest);
     }
 
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/meetings")
     public List<MeetingAppliedCrewResponse> getAllMeetingApplicantByCoach(@RequestParam("coachId") Long coachId) {
