@@ -2,12 +2,14 @@ package finalmission.dto.request;
 
 
 import finalmission.domain.Crew;
+import finalmission.domain.EducationPart;
 
 public record CrewSignUpRequest(
         String name,
         String email,
         String password,
-        int period
+        int period,
+        EducationPart educationPart
 ) {
 
     public Crew toCrew() {
@@ -16,6 +18,7 @@ public record CrewSignUpRequest(
                 .email(email)
                 .password(password)
                 .period(period)
+                .educationPart(educationPart)
                 .build();
     }
 }

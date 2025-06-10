@@ -11,7 +11,12 @@ import org.springframework.data.repository.query.Param;
 public interface MeetingRepository extends JpaRepository<Meeting, Long> {
 
     @Query(value = """
-            SELECT c.id AS crewId, c.name AS crewName, m.dateTime AS meetingDateTime, m.content, m.status AS meetingStatus
+            SELECT c.id AS crewId,
+                   c.name AS crewName,
+                   c.education_part,
+                   m.date_time AS meetingDateTime,
+                   m.content,
+                   m.status AS meetingStatus
                 FROM meeting m
             LEFT JOIN crew c
             ON m.crew_id = c.id
