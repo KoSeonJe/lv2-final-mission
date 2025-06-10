@@ -35,12 +35,31 @@ public class MeetingService {
         meetingRepository.save(meeting);
     }
 
+    @Transactional
+    public String accept(Long meetingId) {
+        Meeting meeting = getMeetingById(meetingId);
+        meeting.updateStatusTo(MeetingStatus.ACCEPT);
+        return meeting.getCrew().getEmail();
+    }
+
+    @Transactional
+    public String deny(Long meetingId) {
+        Meeting meeting = getMeetingById(meetingId);
+        meeting.updateStatusTo(MeetingStatus.DENY);
+        return meeting.getCrew().getEmail();
+    }
+
     private void validateOverlappedDateTime(LocalDateTime dateTime) {
         LocalDateTime overlappedPossibleStartTime = dateTime.minusHours(MEETING_TIME);
         LocalDateTime overlappedPossibleEndTime = dateTime.plusHours(MEETING_TIME);
         if (meetingRepository.existsMeetingByDateTimeBetween(overlappedPossibleStartTime, overlappedPossibleEndTime)) {
             throw new IllegalArgumentException("현재 겹치는 미팅시간이 존재합니다.");
         }
+    }
+
+    private Meeting getMeetingById(Long meetingId) {
+        return meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID로 미팅을 찾을 수 없습니다"));
     }
 
     private Coach getCoachById(Long coachId) {

@@ -44,4 +44,8 @@ public class Meeting {
         this.coach = coach;
         this.crew = crew;
     }
+
+    public void updateStatusTo(MeetingStatus meetingStatus) {
+        this.status = meetingStatus;
+    }
 }

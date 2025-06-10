@@ -19,3 +19,7 @@ spring:
     defer-datasource-initialization: true
     show-sql: true
 
+twilio:
+  base-url : "https://api.sendgrid.com/"
+  secret-key : "key"
+

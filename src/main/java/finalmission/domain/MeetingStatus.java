@@ -1,7 +1,7 @@
 package finalmission.domain;
 
 public enum MeetingStatus {
-    SUCCESS,
+    ACCEPT,
     PENDING,
     DENY
 }
