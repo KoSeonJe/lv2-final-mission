@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.time.LocalTime;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -35,6 +36,17 @@ public class Coach {
     private LocalTime startTime;
 
     private LocalTime endTime;
+
+    @Builder
+    public Coach(String authId, String password, String name, EducationPart educationPart, LocalTime startTime,
+            LocalTime endTime) {
+        this.authId = authId;
+        this.password = password;
+        this.name = name;
+        this.educationPart = educationPart;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
     public void updateMeetingTime(LocalTime startTime, LocalTime endTime) {
         this.startTime = startTime;
