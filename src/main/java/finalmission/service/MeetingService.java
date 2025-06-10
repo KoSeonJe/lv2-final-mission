@@ -26,7 +26,7 @@ public class MeetingService {
 
     @Transactional
     public void create(CreateMeetingRequest request) {
-        validateOverlappedDateTime(request.meetingDateTime());
+        validateOverlappedDateTime(LocalDateTime.of(request.date(), request.time()));
         MeetingStatus meetingStatus = MeetingStatus.PENDING;
         Coach coach = getCoachById(request.coachId());
         Crew crew = getCrewById(request.crewId());
