@@ -25,11 +25,11 @@ public class MeetingService {
     private final CrewRepository crewRepository;
 
     @Transactional
-    public void create(CreateMeetingRequest request, Long crewId) {
+    public void create(CreateMeetingRequest request) {
         validateOverlappedDateTime(request.meetingDateTime());
         MeetingStatus meetingStatus = MeetingStatus.PENDING;
         Coach coach = getCoachById(request.coachId());
-        Crew crew = getCrewById(crewId);
+        Crew crew = getCrewById(request.crewId());
 
         Meeting meeting = request.toMeeting(meetingStatus, coach, crew);
         meetingRepository.save(meeting);

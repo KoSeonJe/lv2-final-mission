@@ -7,6 +7,7 @@ import finalmission.domain.MeetingStatus;
 import java.time.LocalDateTime;
 
 public record CreateMeetingRequest(
+        Long crewId,
         Long coachId,
         LocalDateTime meetingDateTime,
         String content

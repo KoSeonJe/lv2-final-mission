@@ -48,8 +48,8 @@ public class CoachService {
     }
 
     @Transactional
-    public void updateMeetingTime(UpdateMeetingTimeRequest request, Long coachId) {
-        Coach coach = getCoachById(coachId);
+    public void updateMeetingTime(UpdateMeetingTimeRequest request) {
+        Coach coach = getCoachById(request.authenticatedCoachId());
         coach.updateMeetingTime(request.startTime(), request.endTime());
     }
 

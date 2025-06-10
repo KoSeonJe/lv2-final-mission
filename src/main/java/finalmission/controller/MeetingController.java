@@ -22,8 +22,7 @@ public class MeetingController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/meetings")
     public void create(@RequestBody CreateMeetingRequest createMeetingRequest) {
-        Long crewId = 1L;
-        meetingService.create(createMeetingRequest, crewId);
+        meetingService.create(createMeetingRequest);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
