@@ -8,10 +8,10 @@ import org.springframework.web.client.RestClient;
 @Configuration
 public class ClientConfig {
 
-    @Value("twilio.base-url")
+    @Value("${twilio.base-url}")
     private String baseUrl;
 
-    @Value("twilio.secret-key")
+    @Value("${twilio.secret-key}")
     private String secretKey;
 
     @Bean

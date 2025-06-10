@@ -27,10 +27,10 @@ public class CoachService {
     private final TokenService tokenService;
 
     public CoachLoginResponse login(CoachLoginRequest request) {
-        if (!coachRepository.existsByAuthIdAndPassword(request.authId(), request.password())) {
-            throw new IllegalArgumentException("코치의 이메일 혹은 비밀번호가 틀렸습니다.");
-        }
-        String token = tokenService.createToken(COACH);
+        Coach coach = coachRepository.findByAuthIdAndPassword(request.authId(), request.password())
+                .orElseThrow(() -> new IllegalArgumentException("코치의 이메일 혹은 비밀번호가 틀렸습니다."));
+        String token = tokenService.createToken(COACH, coach.getId());
+
         return new CoachLoginResponse(token);
     }
 

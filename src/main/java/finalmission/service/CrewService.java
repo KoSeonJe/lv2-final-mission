@@ -25,10 +25,9 @@ public class CrewService {
     private final MeetingRepository meetingRepository;
 
     public CrewLoginResponse login(CrewLoginRequest request) {
-        if (!crewRepository.existsByEmailAndPassword(request.email(), request.password())) {
-            throw new IllegalArgumentException("크루의 이메일 혹은 비밀번호가 틀렸습니다.");
-        }
-        String token = tokenService.createToken(CREW);
+        Crew crew = crewRepository.findByEmailAndPassword(request.email(), request.password())
+                .orElseThrow(() -> new IllegalArgumentException("크루의 이메일 혹은 비밀번호가 틀렸습니다."));
+        String token = tokenService.createToken(CREW, crew.getId());
         return new CrewLoginResponse(token);
     }
 

@@ -23,3 +23,5 @@ twilio:
   base-url : "https://api.sendgrid.com/"
   secret-key : "key"
 
+jwt:
+  secret-key : 123456789woowacourse1234567890woowacourse
