@@ -1,5 +1,6 @@
 package finalmission.dto.request;
 
+
 import finalmission.domain.Crew;
 
 public record CrewSignUpRequest(

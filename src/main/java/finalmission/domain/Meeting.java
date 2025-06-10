@@ -24,6 +24,8 @@ public class Meeting {
 
     private LocalDateTime dateTime;
 
+    private String content;
+
     @Enumerated(EnumType.STRING)
     private MeetingStatus status;
 

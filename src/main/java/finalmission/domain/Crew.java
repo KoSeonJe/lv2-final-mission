@@ -29,7 +29,7 @@ public class Crew {
     private int period;
 
     @Builder
-    public Crew(String name, String email, String password, int period) {
+    private Crew(String name, String email, String password, int period) {
         this.name = name;
         this.email = email;
         this.password = password;

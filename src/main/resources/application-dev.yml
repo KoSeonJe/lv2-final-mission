@@ -1,6 +1,7 @@
-spring :
-  profiles:
-    active: dev
+spring:
+  config:
+    activate:
+      on-profile: dev
 
   application :
     name : lv2-final-mission
@@ -16,4 +17,5 @@ spring :
     hibernate:
       ddl-auto: create
     defer-datasource-initialization: true
+    show-sql: true
 

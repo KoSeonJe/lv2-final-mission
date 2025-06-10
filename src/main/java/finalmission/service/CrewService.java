@@ -7,6 +7,8 @@ import finalmission.dto.response.CrewLoginResponse;
 import finalmission.dto.response.MeetingAppliedCrewResponse;
 import finalmission.repository.CrewRepository;
 import finalmission.repository.MeetingRepository;
+import finalmission.repository.dto.MeetingWithCrew;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,4 +36,10 @@ public class CrewService {
         crewRepository.save(crew);
     }
 
+    public List<MeetingAppliedCrewResponse> getAllMeetingApplicantByCoach(Long coachId) {
+        List<MeetingWithCrew> meetingsWithCrew = meetingRepository.getAllMeetingWithCrewNameByCoachId(coachId);
+        return meetingsWithCrew.stream()
+                .map(MeetingAppliedCrewResponse::from)
+                .toList();
+    }
 }
