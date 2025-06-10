@@ -1,5 +1,7 @@
 package finalmission.service;
 
+import static finalmission.domain.TokenAuthRole.CREW;
+
 import finalmission.domain.Crew;
 import finalmission.domain.Meeting;
 import finalmission.dto.request.CrewLoginRequest;
@@ -26,7 +28,7 @@ public class CrewService {
         if (!crewRepository.existsByEmailAndPassword(request.email(), request.password())) {
             throw new IllegalArgumentException("크루의 이메일 혹은 비밀번호가 틀렸습니다.");
         }
-        String token = tokenService.createToken();
+        String token = tokenService.createToken(CREW);
         return new CrewLoginResponse(token);
     }
 

@@ -1,10 +1,12 @@
 package finalmission.service;
 
+import static finalmission.domain.TokenAuthRole.COACH;
+
 import finalmission.domain.Coach;
 import finalmission.domain.Meeting;
 import finalmission.dto.request.CoachLoginRequest;
-import finalmission.dto.response.CoachLoginResponse;
 import finalmission.dto.response.AllCoachResponse;
+import finalmission.dto.response.CoachLoginResponse;
 import finalmission.dto.response.CoachResponse;
 import finalmission.repository.CoachRepository;
 import finalmission.repository.MeetingRepository;
@@ -27,7 +29,7 @@ public class CoachService {
         if (!coachRepository.existsByAuthIdAndPassword(request.authId(), request.password())) {
             throw new IllegalArgumentException("코치의 이메일 혹은 비밀번호가 틀렸습니다.");
         }
-        String token = tokenService.createToken();
+        String token = tokenService.createToken(COACH);
         return new CoachLoginResponse(token);
     }
 

@@ -1,8 +1,8 @@
 package finalmission.service;
 
-import org.springframework.stereotype.Service;
+import finalmission.domain.TokenAuthRole;
 
 public interface TokenService {
 
-    String createToken();
+    String createToken(TokenAuthRole tokenAuthRole);
 }
