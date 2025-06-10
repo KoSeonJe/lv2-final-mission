@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +22,14 @@ public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private LocalDateTime dateTime;
+
+    @Enumerated(EnumType.STRING)
+    private MeetingStatus status;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Coach coach;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Crew crew;
-
-    @Enumerated(EnumType.STRING)
-    private MeetingStatus status;
 }
