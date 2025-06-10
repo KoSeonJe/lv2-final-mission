@@ -2,18 +2,25 @@ package finalmission.dto.response;
 
 import finalmission.domain.Coach;
 import finalmission.domain.EducationPart;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 public record CoachResponse(
-        Long coachId,
         String coachName,
-        EducationPart educationPart
+        EducationPart educationPart,
+        LocalTime startTime,
+        LocalTime endTime,
+        List<LocalDateTime> impossibleDateTime
 ) {
 
-    public static CoachResponse from(Coach coach) {
+    public static CoachResponse from(Coach coach, List<LocalDateTime> impossibleDateTime) {
         return new CoachResponse(
-                coach.getId(),
                 coach.getName(),
-                coach.getEducationPart()
+                coach.getEducationPart(),
+                coach.getStartTime(),
+                coach.getEndTime(),
+                impossibleDateTime
         );
     }
 }
