@@ -4,6 +4,7 @@ import finalmission.domain.AuthenticatedMember;
 import finalmission.dto.request.CreateMeetingRequest;
 import finalmission.dto.request.MeetingAnswerRequest;
 import finalmission.dto.response.AllMeetingResponse;
+import finalmission.dto.response.MeetingResponse;
 import finalmission.global.web.Authenticated;
 import finalmission.service.MeetingService;
 import java.util.List;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -33,8 +35,17 @@ public class MeetingController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/user/meetings")
-    public List<AllMeetingResponse> getAll(@Authenticated AuthenticatedMember authenticatedMember) {
+    public List<AllMeetingResponse> getAllByCrewId(@Authenticated AuthenticatedMember authenticatedMember) {
         return meetingService.getAllByCrewId(authenticatedMember.id());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/user/meetings/{meetingId}")
+    public MeetingResponse getByIdAndCrewId(
+            @PathVariable("meetingId") Long meetingId,
+            @Authenticated AuthenticatedMember authenticatedMember
+    ) {
+        return meetingService.getByIdAndCrewId(meetingId, authenticatedMember.id());
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

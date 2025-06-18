@@ -7,6 +7,7 @@ import finalmission.domain.MeetingStatus;
 import finalmission.dto.request.CreateMeetingRequest;
 import finalmission.dto.request.MeetingAnswerRequest;
 import finalmission.dto.response.AllMeetingResponse;
+import finalmission.dto.response.MeetingResponse;
 import finalmission.repository.CoachRepository;
 import finalmission.repository.CrewRepository;
 import finalmission.repository.MeetingRepository;
@@ -45,11 +46,17 @@ public class MeetingService {
     }
 
     // TODO : N+1 코치
-    public List<AllMeetingResponse> getAllByCrewId(Long id) {
-        List<Meeting> meetings = meetingRepository.findAllByCrewId(id);
+    public List<AllMeetingResponse> getAllByCrewId(Long crewId) {
+        List<Meeting> meetings = meetingRepository.findAllByCrewId(crewId);
         return meetings.stream()
                 .map(AllMeetingResponse::from)
                 .toList();
+    }
+
+    public MeetingResponse getByIdAndCrewId(Long meetingId, Long crewId) {
+        Meeting meeting = meetingRepository.findByIdAndCrewId(meetingId, crewId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID와 크루ID로 미팅을 찾을 수 없습니다"));
+        return MeetingResponse.from(meeting);
     }
 
     private void validateOverlappedDateTime(LocalDateTime dateTime) {
