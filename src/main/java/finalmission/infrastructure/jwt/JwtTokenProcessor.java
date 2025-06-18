@@ -1,25 +1,25 @@
-package finalmission.infrastructure;
+package finalmission.infrastructure.jwt;
 
 import finalmission.domain.AuthenticatedMember;
 import finalmission.domain.TokenAuthRole;
 import finalmission.service.TokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import java.nio.charset.StandardCharsets;
-import org.springframework.beans.factory.annotation.Value;
+import java.util.Date;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenProcessor implements TokenService {
 
-    @Value("${jwt.secret-key}")
-    private String secretKey;
+    private final JwtProperties jwtProperties;
 
     @Override
     public String createToken(TokenAuthRole tokenAuthRole, Long id) {
         return Jwts.builder()
-                .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getExpiration()))
+                .signWith(jwtProperties.getSignKey())
                 .claim("role", tokenAuthRole.name())
                 .claim("id", id)
                 .compact();
@@ -28,7 +28,7 @@ public class JwtTokenProcessor implements TokenService {
     @Override
     public AuthenticatedMember extract(String token) {
         Claims body = Jwts.parserBuilder()
-                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
+                .setSigningKey(jwtProperties.getSignKey())
                 .build()
                 .parseClaimsJwt(token)
                 .getBody();

@@ -19,9 +19,11 @@ spring:
     defer-datasource-initialization: true
     show-sql: true
 
-twilio:
-  base-url : "https://api.sendgrid.com/"
-  secret-key : "key"
+open-api:
+  holiday :
+    base-url : "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService"
+    secret-key : ${HOLIDAY_API_SECRET_KEY}
 
 jwt:
   secret-key : 123456789woowacourse1234567890woowacourse
+  expiration : 3600000  # ms, 1??
