@@ -6,6 +6,7 @@ import finalmission.domain.Meeting;
 import finalmission.domain.MeetingStatus;
 import finalmission.dto.request.CreateMeetingRequest;
 import finalmission.dto.request.MeetingAnswerRequest;
+import finalmission.dto.request.UpdateMeetingRequest;
 import finalmission.dto.response.AllMeetingResponse;
 import finalmission.dto.response.MeetingResponse;
 import finalmission.repository.CoachRepository;
@@ -45,6 +46,13 @@ public class MeetingService {
         meeting.updateStatusTo(request.answer());
     }
 
+    @Transactional
+    public void update(Long crewId, UpdateMeetingRequest request) {
+        Meeting meeting = getMeetingById(request.meetingId());
+        validateOwnerCrew(crewId, meeting);
+        meeting.update(request.content());
+    }
+
     // TODO : N+1 코치
     public List<AllMeetingResponse> getAllByCrewId(Long crewId) {
         List<Meeting> meetings = meetingRepository.findAllByCrewId(crewId);
@@ -52,11 +60,16 @@ public class MeetingService {
                 .map(AllMeetingResponse::from)
                 .toList();
     }
-
     public MeetingResponse getByIdAndCrewId(Long meetingId, Long crewId) {
         Meeting meeting = meetingRepository.findByIdAndCrewId(meetingId, crewId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID와 크루ID로 미팅을 찾을 수 없습니다"));
         return MeetingResponse.from(meeting);
+    }
+
+    private void validateOwnerCrew(Long crewId, Meeting meeting) {
+        if (meeting.isNotOwnerCrew(crewId)) {
+            throw new IllegalArgumentException("현재 로그인된 크루는 해당 미팅을 수정할 수 없습니다.");
+        }
     }
 
     private void validateOverlappedDateTime(LocalDateTime dateTime) {

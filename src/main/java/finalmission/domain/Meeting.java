@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,5 +48,13 @@ public class Meeting {
 
     public void updateStatusTo(MeetingStatus meetingStatus) {
         this.status = meetingStatus;
+    }
+
+    public boolean isNotOwnerCrew(Long crewId) {
+        return !Objects.equals(crew.getId(), crewId);
+    }
+
+    public void update(String content) {
+        this.content = content;
     }
 }

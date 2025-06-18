@@ -3,6 +3,7 @@ package finalmission.controller;
 import finalmission.domain.AuthenticatedMember;
 import finalmission.dto.request.CreateMeetingRequest;
 import finalmission.dto.request.MeetingAnswerRequest;
+import finalmission.dto.request.UpdateMeetingRequest;
 import finalmission.dto.response.AllMeetingResponse;
 import finalmission.dto.response.MeetingResponse;
 import finalmission.global.web.Authenticated;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,6 +48,15 @@ public class MeetingController {
             @Authenticated AuthenticatedMember authenticatedMember
     ) {
         return meetingService.getByIdAndCrewId(meetingId, authenticatedMember.id());
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/user/meetings")
+    public void update(
+            @Authenticated AuthenticatedMember authenticatedMember,
+            @RequestBody UpdateMeetingRequest updateMeetingRequest
+    ) {
+        meetingService.update(authenticatedMember.id(), updateMeetingRequest);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
