@@ -1,7 +1,7 @@
 package finalmission.dto.response;
 
 public record CrewLoginResponse(
-        String authToken
+        String token
 ) {
 
 }
