@@ -20,7 +20,7 @@ public class MeetingController {
     private final MeetingService meetingService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/meetings")
+    @PostMapping("/user/meetings")
     public void create(
             @Authenticated AuthenticatedMember authenticatedMember,
             @RequestBody CreateMeetingRequest createMeetingRequest

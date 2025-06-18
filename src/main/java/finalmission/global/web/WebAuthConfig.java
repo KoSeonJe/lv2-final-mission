@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebAuthConfig implements WebMvcConfigurer {
 
     private final CheckAdminInterceptor checkAdminInterceptor;
+    private final CheckUserInterceptor checkUserInterceptor;
     private final AuthMemberArgumentResolver authMemberArgumentResolver;
 
     @Override
@@ -23,5 +24,8 @@ public class WebAuthConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(checkAdminInterceptor)
                 .addPathPatterns("/admin/**");
+
+        registry.addInterceptor(checkUserInterceptor)
+                .addPathPatterns("/user/**");
     }
 }
