@@ -1,11 +1,11 @@
 package finalmission.global.web;
 
+import static finalmission.domain.TokenAuthRole.USER;
+
 import finalmission.domain.AuthenticatedMember;
-import finalmission.domain.TokenAuthRole;
 import finalmission.service.TokenService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,7 +21,7 @@ public class CheckUserInterceptor implements HandlerInterceptor {
             throws Exception {
         String rawToken = request.getHeader("Authorization");
         AuthenticatedMember authenticatedMember = tokenService.extract(rawToken);
-        if (Objects.equals(TokenAuthRole.USER, authenticatedMember.tokenAuthRole())) {
+        if (authenticatedMember.tokenAuthRole().hasAccessRole(USER)) {
             return true;
         }
         response.setStatus(403);
