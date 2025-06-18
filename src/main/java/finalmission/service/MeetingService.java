@@ -6,10 +6,12 @@ import finalmission.domain.Meeting;
 import finalmission.domain.MeetingStatus;
 import finalmission.dto.request.CreateMeetingRequest;
 import finalmission.dto.request.MeetingAnswerRequest;
+import finalmission.dto.response.AllMeetingResponse;
 import finalmission.repository.CoachRepository;
 import finalmission.repository.CrewRepository;
 import finalmission.repository.MeetingRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,14 @@ public class MeetingService {
     public void updateAnswer(MeetingAnswerRequest request) {
         Meeting meeting = getMeetingById(request.meetingId());
         meeting.updateStatusTo(request.answer());
+    }
+
+    // TODO : N+1 코치
+    public List<AllMeetingResponse> getAllByCrewId(Long id) {
+        List<Meeting> meetings = meetingRepository.findAllByCrewId(id);
+        return meetings.stream()
+                .map(AllMeetingResponse::from)
+                .toList();
     }
 
     private void validateOverlappedDateTime(LocalDateTime dateTime) {

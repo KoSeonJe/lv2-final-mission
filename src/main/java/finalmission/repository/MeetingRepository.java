@@ -10,4 +10,6 @@ public interface MeetingRepository extends JpaRepository<Meeting, Long> {
     List<Meeting> findAllByCoachId(Long coachId);
 
     boolean existsMeetingByDateTimeBetween(LocalDateTime overlappedPossibleStartTime, LocalDateTime overlappedPossibleEndTime);
+
+    List<Meeting> findAllByCrewId(Long crewId);
 }
