@@ -3,14 +3,11 @@ package finalmission.service;
 import static finalmission.domain.TokenAuthRole.USER;
 
 import finalmission.domain.Crew;
-import finalmission.domain.Meeting;
 import finalmission.dto.request.CrewLoginRequest;
 import finalmission.dto.request.CrewSignUpRequest;
 import finalmission.dto.response.CrewLoginResponse;
-import finalmission.dto.response.MeetingAppliedCrewResponse;
 import finalmission.repository.CrewRepository;
 import finalmission.repository.MeetingRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,13 +32,5 @@ public class CrewService {
     public void signUp(CrewSignUpRequest crewSignUpRequest) {
         Crew crew = crewSignUpRequest.toCrew();
         crewRepository.save(crew);
-    }
-
-    // TODO : N+1 문제 해결하기
-    public List<MeetingAppliedCrewResponse> getAllMeetingApplicantByCoach(Long coachId) {
-        List<Meeting> meetings = meetingRepository.findAllByCoachId(coachId);
-        return meetings.stream()
-                .map(MeetingAppliedCrewResponse::from)
-                .toList();
     }
 }

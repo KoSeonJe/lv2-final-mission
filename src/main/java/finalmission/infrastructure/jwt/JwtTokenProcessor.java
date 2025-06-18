@@ -20,22 +20,29 @@ public class JwtTokenProcessor implements TokenService {
         return Jwts.builder()
                 .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.getExpiration()))
                 .signWith(jwtProperties.getSignKey())
+                .claim("id", id.toString())
                 .claim("role", tokenAuthRole.name())
-                .claim("id", id)
                 .compact();
     }
 
     @Override
     public AuthenticatedMember extract(String rawToken) {
-        Claims body = Jwts.parserBuilder()
+        validateToken(rawToken);
+        Claims body = (Claims) Jwts.parserBuilder()
                 .setSigningKey(jwtProperties.getSignKey())
                 .build()
-                .parseClaimsJwt(rawToken.split(" ")[1])
+                .parse(rawToken.split(" ")[1])
                 .getBody();
 
         return new AuthenticatedMember(
-                body.get("role", TokenAuthRole.class),
-                body.get("id", Long.class)
+                TokenAuthRole.findByName(body.get("role", String.class)),
+                Long.valueOf(body.get("id", String.class))
         );
+    }
+
+    private void validateToken(String rawToken) {
+        if (rawToken == null || !rawToken.startsWith("Bearer")) {
+            throw new IllegalArgumentException("잘못된 토큰 형식입니다.");
+        }
     }
 }

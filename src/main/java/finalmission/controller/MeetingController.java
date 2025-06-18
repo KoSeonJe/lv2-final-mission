@@ -5,6 +5,7 @@ import finalmission.dto.request.CreateMeetingRequest;
 import finalmission.dto.request.MeetingAnswerRequest;
 import finalmission.dto.request.UpdateMeetingRequest;
 import finalmission.dto.response.AllMeetingResponse;
+import finalmission.dto.response.MeetingAppliedCrewResponse;
 import finalmission.dto.response.MeetingResponse;
 import finalmission.global.web.Authenticated;
 import finalmission.service.MeetingService;
@@ -36,7 +37,15 @@ public class MeetingController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/user/meetings")
+    @GetMapping("/admin/coaches/meetings")
+    public List<MeetingAppliedCrewResponse> getAllMeetingApplicantByCoach(
+            @Authenticated AuthenticatedMember authenticatedMember
+    ) {
+        return meetingService.getAllMeetingApplicantByCoachId(authenticatedMember.id());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/user/crews/meetings")
     public List<AllMeetingResponse> getAllByCrewId(@Authenticated AuthenticatedMember authenticatedMember) {
         return meetingService.getAllByCrewId(authenticatedMember.id());
     }

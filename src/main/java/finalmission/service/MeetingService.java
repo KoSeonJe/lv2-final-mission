@@ -8,6 +8,7 @@ import finalmission.dto.request.CreateMeetingRequest;
 import finalmission.dto.request.MeetingAnswerRequest;
 import finalmission.dto.request.UpdateMeetingRequest;
 import finalmission.dto.response.AllMeetingResponse;
+import finalmission.dto.response.MeetingAppliedCrewResponse;
 import finalmission.dto.response.MeetingResponse;
 import finalmission.repository.CoachRepository;
 import finalmission.repository.CrewRepository;
@@ -29,6 +30,7 @@ public class MeetingService {
     private final CoachRepository coachRepository;
     private final CrewRepository crewRepository;
 
+    //TODO : LocalDateTime 변환 로직 null 체크하기
     @Transactional
     public void create(Long crewId, CreateMeetingRequest request) {
         validateOverlappedDateTime(LocalDateTime.of(request.date(), request.time()));
@@ -51,6 +53,14 @@ public class MeetingService {
         Meeting meeting = getMeetingById(meetingId);
         validateOwnerCrew(crewId, meeting);
         meeting.update(request.content());
+    }
+
+    // TODO : N+1 문제 해결하기
+    public List<MeetingAppliedCrewResponse> getAllMeetingApplicantByCoachId(Long coachId) {
+        List<Meeting> meetings = meetingRepository.findAllByCoachId(coachId);
+        return meetings.stream()
+                .map(MeetingAppliedCrewResponse::from)
+                .toList();
     }
 
     // TODO : N+1 코치
