@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public record CreateMeetingRequest(
-        Long crewId,
         Long coachId,
         LocalDate date,
         LocalTime time,

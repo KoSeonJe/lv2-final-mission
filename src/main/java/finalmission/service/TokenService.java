@@ -7,5 +7,5 @@ public interface TokenService {
 
     String createToken(TokenAuthRole tokenAuthRole, Long id);
 
-    AuthenticatedMember extract(String token);
+    AuthenticatedMember extract(String rawToken);
 }

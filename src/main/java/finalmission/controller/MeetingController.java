@@ -1,6 +1,8 @@
 package finalmission.controller;
 
+import finalmission.domain.AuthenticatedMember;
 import finalmission.dto.request.CreateMeetingRequest;
+import finalmission.global.web.Authenticated;
 import finalmission.service.MailService;
 import finalmission.service.MeetingService;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +23,22 @@ public class MeetingController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/meetings")
-    public void create(@RequestBody CreateMeetingRequest createMeetingRequest) {
-        meetingService.create(createMeetingRequest);
+    public void create(
+            @Authenticated AuthenticatedMember authenticatedMember,
+            @RequestBody CreateMeetingRequest createMeetingRequest
+    ) {
+        meetingService.create(authenticatedMember.id(), createMeetingRequest);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/coach/meetings/{meetingId}/accept")
+    @PatchMapping("/admin/meetings/{meetingId}/accept")
     public void accept(@PathVariable("meetingId") Long meetingId) {
         String acceptedEmail = meetingService.accept(meetingId);
         mailService.sendAcceptEmail(acceptedEmail);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/coach/meetings/{meetingId}/deny")
+    @PatchMapping("/admin/meetings/{meetingId}/deny")
     public void deny(@PathVariable("meetingId") Long meetingId) {
         String deniedEmail = meetingService.deny(meetingId);
         mailService.sendDenyEmail(deniedEmail);

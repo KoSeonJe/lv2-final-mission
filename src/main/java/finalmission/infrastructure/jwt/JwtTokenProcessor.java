@@ -26,11 +26,11 @@ public class JwtTokenProcessor implements TokenService {
     }
 
     @Override
-    public AuthenticatedMember extract(String token) {
+    public AuthenticatedMember extract(String rawToken) {
         Claims body = Jwts.parserBuilder()
                 .setSigningKey(jwtProperties.getSignKey())
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJwt(rawToken.split(" ")[1])
                 .getBody();
 
         return new AuthenticatedMember(

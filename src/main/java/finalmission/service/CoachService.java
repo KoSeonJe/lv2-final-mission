@@ -1,6 +1,6 @@
 package finalmission.service;
 
-import static finalmission.domain.TokenAuthRole.COACH;
+import static finalmission.domain.TokenAuthRole.ADMIN;
 
 import finalmission.domain.Coach;
 import finalmission.domain.Meeting;
@@ -29,7 +29,7 @@ public class CoachService {
     public CoachLoginResponse login(CoachLoginRequest request) {
         Coach coach = coachRepository.findByAuthIdAndPassword(request.authId(), request.password())
                 .orElseThrow(() -> new IllegalArgumentException("코치의 이메일 혹은 비밀번호가 틀렸습니다."));
-        String token = tokenService.createToken(COACH, coach.getId());
+        String token = tokenService.createToken(ADMIN, coach.getId());
 
         return new CoachLoginResponse(token);
     }
@@ -48,8 +48,8 @@ public class CoachService {
     }
 
     @Transactional
-    public void updateMeetingTime(UpdateMeetingTimeRequest request) {
-        Coach coach = getCoachById(request.authenticatedCoachId());
+    public void updateMeetingTime(Long authenticatedCoachId, UpdateMeetingTimeRequest request) {
+        Coach coach = getCoachById(authenticatedCoachId);
         coach.updateMeetingTime(request.startTime(), request.endTime());
     }
 

@@ -1,10 +1,12 @@
 package finalmission.controller;
 
+import finalmission.domain.AuthenticatedMember;
 import finalmission.dto.request.CoachLoginRequest;
 import finalmission.dto.request.UpdateMeetingTimeRequest;
 import finalmission.dto.response.AllCoachResponse;
 import finalmission.dto.response.CoachLoginResponse;
 import finalmission.dto.response.CoachResponse;
+import finalmission.global.web.Authenticated;
 import finalmission.service.CoachService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +44,11 @@ public class CoachController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/coach/coaches/meet-time")
-    public void updateMeetingTime(@RequestBody UpdateMeetingTimeRequest updateMeetingTimeRequest) {
-        coachService.updateMeetingTime(updateMeetingTimeRequest);
+    @PatchMapping("/admin/coaches/meet-time")
+    public void updateMeetingTime(
+            @Authenticated AuthenticatedMember authenticatedMember,
+            @RequestBody UpdateMeetingTimeRequest updateMeetingTimeRequest
+    ) {
+        coachService.updateMeetingTime(authenticatedMember.id(), updateMeetingTimeRequest);
     }
 }
