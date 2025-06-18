@@ -5,6 +5,7 @@ import finalmission.domain.Crew;
 import finalmission.domain.Meeting;
 import finalmission.domain.MeetingStatus;
 import finalmission.dto.request.CreateMeetingRequest;
+import finalmission.dto.request.MeetingAnswerRequest;
 import finalmission.repository.CoachRepository;
 import finalmission.repository.CrewRepository;
 import finalmission.repository.MeetingRepository;
@@ -36,17 +37,9 @@ public class MeetingService {
     }
 
     @Transactional
-    public String accept(Long meetingId) {
-        Meeting meeting = getMeetingById(meetingId);
-        meeting.updateStatusTo(MeetingStatus.ACCEPT);
-        return meeting.getCrew().getEmail();
-    }
-
-    @Transactional
-    public String deny(Long meetingId) {
-        Meeting meeting = getMeetingById(meetingId);
-        meeting.updateStatusTo(MeetingStatus.DENY);
-        return meeting.getCrew().getEmail();
+    public void updateAnswer(MeetingAnswerRequest request) {
+        Meeting meeting = getMeetingById(request.meetingId());
+        meeting.updateStatusTo(request.answer());
     }
 
     private void validateOverlappedDateTime(LocalDateTime dateTime) {

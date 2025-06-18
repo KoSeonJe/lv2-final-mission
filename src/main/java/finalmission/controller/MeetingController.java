@@ -2,13 +2,12 @@ package finalmission.controller;
 
 import finalmission.domain.AuthenticatedMember;
 import finalmission.dto.request.CreateMeetingRequest;
+import finalmission.dto.request.MeetingAnswerRequest;
 import finalmission.global.web.Authenticated;
-import finalmission.service.MailService;
 import finalmission.service.MeetingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class MeetingController {
 
     private final MeetingService meetingService;
-    private final MailService mailService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/meetings")
@@ -31,16 +29,8 @@ public class MeetingController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/admin/meetings/{meetingId}/accept")
-    public void accept(@PathVariable("meetingId") Long meetingId) {
-        String acceptedEmail = meetingService.accept(meetingId);
-        mailService.sendAcceptEmail(acceptedEmail);
-    }
-
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/admin/meetings/{meetingId}/deny")
-    public void deny(@PathVariable("meetingId") Long meetingId) {
-        String deniedEmail = meetingService.deny(meetingId);
-        mailService.sendDenyEmail(deniedEmail);
+    @PatchMapping("/admin/meetings")
+    public void answer(@RequestBody MeetingAnswerRequest meetingAnswerRequest) {
+        meetingService.updateAnswer(meetingAnswerRequest);
     }
 }
