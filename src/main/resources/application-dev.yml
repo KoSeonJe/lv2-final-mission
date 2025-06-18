@@ -23,6 +23,8 @@ open-api:
   holiday :
     base-url : "http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService"
     secret-key : ${HOLIDAY_API_SECRET_KEY}
+    connection-timeout : 3
+    read-timeout : 15
 
 jwt:
   secret-key : 123456789woowacourse1234567890woowacourse

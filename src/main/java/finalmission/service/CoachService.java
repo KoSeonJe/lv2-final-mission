@@ -3,7 +3,10 @@ package finalmission.service;
 import static finalmission.domain.TokenAuthRole.ADMIN;
 
 import finalmission.domain.Coach;
+import finalmission.domain.Holiday;
+import finalmission.domain.HolidayExtractor;
 import finalmission.domain.Meeting;
+import finalmission.domain.TokenProcessor;
 import finalmission.dto.request.CoachLoginRequest;
 import finalmission.dto.request.UpdateMeetingTimeRequest;
 import finalmission.dto.response.AllCoachResponse;
@@ -11,6 +14,7 @@ import finalmission.dto.response.CoachLoginResponse;
 import finalmission.dto.response.CoachResponse;
 import finalmission.repository.CoachRepository;
 import finalmission.repository.MeetingRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,12 +28,13 @@ public class CoachService {
 
     private final CoachRepository coachRepository;
     private final MeetingRepository meetingRepository;
-    private final TokenService tokenService;
+    private final TokenProcessor tokenProcessor;
+    private final HolidayExtractor holidayExtractor;
 
     public CoachLoginResponse login(CoachLoginRequest request) {
         Coach coach = coachRepository.findByAuthIdAndPassword(request.authId(), request.password())
                 .orElseThrow(() -> new IllegalArgumentException("코치의 이메일 혹은 비밀번호가 틀렸습니다."));
-        String token = tokenService.createToken(ADMIN, coach.getId());
+        String token = tokenProcessor.createToken(ADMIN, coach.getId());
 
         return new CoachLoginResponse(token);
     }
@@ -43,8 +48,14 @@ public class CoachService {
     public CoachResponse getById(Long id) {
         Coach coach = getCoachById(id);
         List<Meeting> meetingsByCoachId = meetingRepository.findAllByCoachId(id);
-        List<LocalDateTime> impossibleDateTime = extractImpossibleDateTime(meetingsByCoachId);
-        return CoachResponse.from(coach, impossibleDateTime);
+        List<LocalDateTime> reservedDateTime = extractReservedDateTime(meetingsByCoachId);
+        List<Holiday> holidays = extractHolidays();
+        return CoachResponse.of(coach, reservedDateTime, holidays);
+    }
+
+    private List<Holiday> extractHolidays() {
+        LocalDate date = LocalDate.now();
+        return holidayExtractor.extract(date.getYear(), date.getMonthValue());
     }
 
     @Transactional
@@ -53,7 +64,7 @@ public class CoachService {
         coach.updateMeetingTime(request.startTime(), request.endTime());
     }
 
-    private List<LocalDateTime> extractImpossibleDateTime(List<Meeting> meetings) {
+    private List<LocalDateTime> extractReservedDateTime(List<Meeting> meetings) {
         return meetings.stream()
                 .map(Meeting::getDateTime)
                 .filter(dateTime -> dateTime.isAfter(LocalDateTime.now()))
