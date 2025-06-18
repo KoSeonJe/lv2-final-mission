@@ -1,6 +1,6 @@
 package finalmission.controller;
 
-import finalmission.domain.AuthenticatedMember;
+import finalmission.dto.AuthenticatedMember;
 import finalmission.dto.request.CreateMeetingRequest;
 import finalmission.dto.request.MeetingAnswerRequest;
 import finalmission.dto.request.UpdateMeetingRequest;

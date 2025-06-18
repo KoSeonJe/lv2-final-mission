@@ -1,7 +1,7 @@
 package finalmission.global.web;
 
-import finalmission.domain.AuthenticatedMember;
-import finalmission.service.TokenService;
+import finalmission.dto.AuthenticatedMember;
+import finalmission.domain.TokenProcessor;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
@@ -15,7 +15,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final TokenService tokenService;
+    private final TokenProcessor tokenProcessor;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -27,6 +27,6 @@ public class AuthMemberArgumentResolver implements HandlerMethodArgumentResolver
             NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String rawToken = request.getHeader("Authorization");
-        return tokenService.extract(rawToken);
+        return tokenProcessor.extract(rawToken);
     }
 }

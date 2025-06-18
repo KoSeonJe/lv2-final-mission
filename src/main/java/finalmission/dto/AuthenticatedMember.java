@@ -1,4 +1,6 @@
-package finalmission.domain;
+package finalmission.dto;
+
+import finalmission.domain.TokenAuthRole;
 
 public record AuthenticatedMember(
         TokenAuthRole tokenAuthRole,

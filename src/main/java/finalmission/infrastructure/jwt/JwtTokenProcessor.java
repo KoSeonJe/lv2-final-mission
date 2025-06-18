@@ -1,8 +1,8 @@
 package finalmission.infrastructure.jwt;
 
-import finalmission.domain.AuthenticatedMember;
+import finalmission.dto.AuthenticatedMember;
 import finalmission.domain.TokenAuthRole;
-import finalmission.service.TokenService;
+import finalmission.domain.TokenProcessor;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.util.Date;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenProcessor implements TokenService {
+public class JwtTokenProcessor implements TokenProcessor {
 
     private final JwtProperties jwtProperties;
 
