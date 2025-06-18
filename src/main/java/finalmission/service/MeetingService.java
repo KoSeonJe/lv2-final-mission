@@ -41,14 +41,14 @@ public class MeetingService {
     }
 
     @Transactional
-    public void updateAnswer(MeetingAnswerRequest request) {
-        Meeting meeting = getMeetingById(request.meetingId());
+    public void updateAnswer(Long meetingId, MeetingAnswerRequest request) {
+        Meeting meeting = getMeetingById(meetingId);
         meeting.updateStatusTo(request.answer());
     }
 
     @Transactional
-    public void update(Long crewId, UpdateMeetingRequest request) {
-        Meeting meeting = getMeetingById(request.meetingId());
+    public void update(Long meetingId, Long crewId, UpdateMeetingRequest request) {
+        Meeting meeting = getMeetingById(meetingId);
         validateOwnerCrew(crewId, meeting);
         meeting.update(request.content());
     }
@@ -60,6 +60,7 @@ public class MeetingService {
                 .map(AllMeetingResponse::from)
                 .toList();
     }
+
     public MeetingResponse getByIdAndCrewId(Long meetingId, Long crewId) {
         Meeting meeting = meetingRepository.findByIdAndCrewId(meetingId, crewId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 ID와 크루ID로 미팅을 찾을 수 없습니다"));

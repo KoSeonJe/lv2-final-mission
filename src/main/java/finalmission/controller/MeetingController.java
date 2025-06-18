@@ -51,17 +51,21 @@ public class MeetingController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/user/meetings")
+    @PutMapping("/user/meetings/{meetingId}")
     public void update(
+            @PathVariable("meetingId") Long meetingId,
             @Authenticated AuthenticatedMember authenticatedMember,
             @RequestBody UpdateMeetingRequest updateMeetingRequest
     ) {
-        meetingService.update(authenticatedMember.id(), updateMeetingRequest);
+        meetingService.update(meetingId, authenticatedMember.id(), updateMeetingRequest);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping("/admin/meetings")
-    public void answer(@RequestBody MeetingAnswerRequest meetingAnswerRequest) {
-        meetingService.updateAnswer(meetingAnswerRequest);
+    @PatchMapping("/admin/meetings/{meetingId}")
+    public void answer(
+            @PathVariable("meetingId") Long meetingId,
+            @RequestBody MeetingAnswerRequest meetingAnswerRequest
+    ) {
+        meetingService.updateAnswer(meetingId, meetingAnswerRequest);
     }
 }
