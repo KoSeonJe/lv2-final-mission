@@ -28,6 +28,7 @@ public class Crew {
 
     private String password;
 
+    @Column(name = "periods")
     private int period;
 
     @Enumerated(EnumType.STRING)

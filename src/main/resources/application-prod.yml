@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: prod
 
   application :
     name : lv2-final-mission
@@ -13,9 +13,10 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
     defer-datasource-initialization: false
-    show-sql: true
+    show-sql: false
+
   flyway:
     enabled: true
     baseline-on-migrate: false
